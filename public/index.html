@@ -39,6 +39,14 @@
     </div>
     <p id="load">Firebase SDK Loading&hellip;</p>
 
+    <h3>Regist</h3>
+    <form>
+      Email:
+      <input type="text" id="email"><br>
+      Pass:
+      <input type="password" id="password"><br>
+      <input type="button" id="registBtn" value="regist"><br>
+    </form>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
@@ -60,6 +68,31 @@
           document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
         }
       });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+      $("#registBtn").click(function(){
+        var email = $("#email").val();
+        var password = $("#password").val();
+        console.log("call onClick registBtn "+email+";");
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then(function(user){
+            console.log(user);
+          })
+          .catch(function(error) {
+            console.log("ERROR " + error.code + " : "+error.message);
+          });
+      });
+
+      firebase.auth().onAuthStateChanged(function(user){
+        if(user) {
+          console.log(user)
+        } else {
+          console.log("user is signed out");
+        }
+      });
+      
     </script>
   </body>
 </html>
