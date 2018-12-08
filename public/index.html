@@ -47,7 +47,14 @@
       <input type="password" id="password"><br>
       <input type="button" id="registBtn" value="regist"><br>
     </form>
+
+    <h3>Google OAuth</h3>
+    <form>
+        <input type="button" id="googleLoginBtn" value="Login"><br>
+      </form>
     <script>
+      // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signInWithEmailAndPassword
+       // intialize 
       document.addEventListener('DOMContentLoaded', function() {
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
@@ -67,6 +74,15 @@
           console.error(e);
           document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
         }
+
+
+        firebase.auth().onAuthStateChanged(function(user){
+          if(user) {
+            console.log(user)
+          } else {
+            console.log("user is signed out");
+          }
+        });
       });
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -85,13 +101,13 @@
           });
       });
 
-      firebase.auth().onAuthStateChanged(function(user){
-        if(user) {
-          console.log(user)
-        } else {
-          console.log("user is signed out");
-        }
+      $(googleLoginBtn).click(function(){
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+        firebase.auth().signInWithRedirect(provider);
       });
+
+
       
     </script>
   </body>
